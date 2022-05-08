@@ -8,23 +8,37 @@ import com.exception.CoordinateException;
 import com.exception.RoverInputException;
 
 public class Rover {
-	
+	private long roverId;
 	private CardinalDirection facingDirection;
 	private Coordinates coordinates;
 	
+	public long getRoverId() {
+		return roverId;
+	}
+
 	public Coordinates getCoordinates() {
 		return coordinates;
 	}
 	
-	public void initializeRover(String textInput, Set<Coordinates> existingItemsCoordinates) throws RoverInputException {
+	public void initializeRover(long roverId, String textInput, Set<Coordinates> existingItemsCoordinates, Plateau plateau)
+			throws RoverInputException {
+		this.roverId = roverId;
 		List<String> inputList = Arrays.asList(textInput.split(" "));
 		if (inputList.size() != 3) {
 			throw new RoverInputException("The input : " + textInput + " is not a valid Rover input.");
 		}
 		try {
 			coordinates = new Coordinates(inputList.get(0), inputList.get(1));
+			if (plateau == null) {
+				String errorMessage = "Cannot initialize a rover outside of a plateau.";
+				throw new RoverInputException(errorMessage);
+			}
 			if (existingItemsCoordinates.contains(coordinates)) {
 				String errorMessage = inputList.get(0) + " " + inputList.get(1) + " coordinates are already occupied.";
+				throw new RoverInputException(errorMessage);
+			}
+			if (!plateau.isValidCoordinates(coordinates)) {
+				String errorMessage = inputList.get(0) + " " + inputList.get(1) + " coordinates are out of bond.";
 				throw new RoverInputException(errorMessage);
 			}
 		} catch (CoordinateException e) {
@@ -45,7 +59,17 @@ public class Rover {
 		return "";
 	}
 	
-	public void applyCommand(RoverCommand roverCommand, Plateau plateau, Set<Coordinates> existingItemsCoordinates) {
+	public void applyCommandString(String roverCommandString, Plateau plateau, Set<Coordinates> existingItemsCoordinates) 
+			throws RoverInputException {
+		try {
+			RoverCommand roverCommand = RoverCommand.valueOf(roverCommandString);
+			applyCommand(roverCommand, plateau, existingItemsCoordinates);
+		} catch (IllegalArgumentException error) {
+			throw new RoverInputException(roverCommandString + " is not a valid Rover Command.");
+		}
+	}
+	
+	private void applyCommand(RoverCommand roverCommand, Plateau plateau, Set<Coordinates> existingItemsCoordinates) {
 		switch(roverCommand) {
 		case L :
 			facingDirection = CardinalDirection.getLeft(facingDirection);
