@@ -1,5 +1,9 @@
 package com.model;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +19,26 @@ public class World {
 	private List<Rover> rovers = new ArrayList<>();
 	private Map<Long, String> commandsAsString = new HashMap<>();
 	private long idIncrement = 0;
+	
+	public void initializeWorldFromFile(Path path) throws IOException, PlateauInputException {
+		BufferedReader reader = new BufferedReader(new FileReader(path.toFile()));
+		String plateauCoordinates = reader.readLine();
+		addPlateau(plateauCoordinates);
+		String roverInput = null;
+		String commandAsString = null;
+		String line;
+		while ((line = reader.readLine()) != null) {
+			if (roverInput == null) {
+				roverInput = line;
+			} else if (commandAsString == null) {
+				commandAsString = line;
+				addRover(roverInput, commandAsString);
+				roverInput = null;
+				commandAsString = null;
+			}
+		}
+	    reader.close();
+	}
 	
 	public void addPlateau(String coordinatesAsString) throws PlateauInputException {
 		plateau = new Plateau();
