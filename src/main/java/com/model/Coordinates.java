@@ -15,9 +15,7 @@ public class Coordinates {
 		this.y = yCandidate;
 	}
 	
-	public Coordinates(int x, int y) throws CoordinateException {
-		checkCoordinatePositivity(x);
-		checkCoordinatePositivity(y);
+	public Coordinates(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}

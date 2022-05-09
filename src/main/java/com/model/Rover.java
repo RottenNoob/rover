@@ -66,12 +66,10 @@ public class Rover {
 			applyCommand(roverCommand, plateau, existingItemsCoordinates);
 		} catch (IllegalArgumentException error) {
 			throw new RoverInputException(roverCommandString + " is not a valid Rover Command.");
-		} catch (CoordinateException e) {
-			throw new RoverInputException(roverCommandString + " tried to move to an illegal position.");
 		}
 	}
 	
-	private void applyCommand(RoverCommand roverCommand, Plateau plateau, Set<Coordinates> existingItemsCoordinates) throws CoordinateException {
+	private void applyCommand(RoverCommand roverCommand, Plateau plateau, Set<Coordinates> existingItemsCoordinates) {
 		switch(roverCommand) {
 		case L :
 			facingDirection = CardinalDirection.getLeft(facingDirection);
@@ -86,7 +84,7 @@ public class Rover {
 		}
 	}
 	
-	private void moveRover(Plateau plateau, Set<Coordinates> existingItemsCoordinates) throws CoordinateException {
+	private void moveRover(Plateau plateau, Set<Coordinates> existingItemsCoordinates) {
 		int xMove = coordinates.getX();
 		int yMove = coordinates.getY();
 		switch(facingDirection) {
