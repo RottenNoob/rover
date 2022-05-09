@@ -60,4 +60,11 @@ class WorldTest {
         Assertions.assertEquals(expectedFirstPosition, world.getAllRoverPositions().get(0));
         Assertions.assertEquals(expectedSecondPosition, world.getAllRoverPositions().get(1));
     }
+
+    @Test
+    void world_initialization_should_fail_given_invalid_input() {
+        World world = new World();
+        Assertions.assertThrows(PlateauInputException.class, () -> world.addPlateau("6 -54"));
+        Assertions.assertThrows(PlateauInputException.class, () -> world.addPlateau("S 2"));
+    }
 }

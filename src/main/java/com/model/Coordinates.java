@@ -7,11 +7,17 @@ public class Coordinates {
 	private int y;
 	
 	public Coordinates(String xString, String yString) throws CoordinateException {
-		this.x = getCoordinateFromString(xString);
-		this.y = getCoordinateFromString(yString);
+		int xCandidate = getCoordinateFromString(xString);
+		int yCandidate = getCoordinateFromString(yString);
+		checkCoordinatePositivity(xCandidate);
+		checkCoordinatePositivity(yCandidate);
+		this.x = xCandidate;
+		this.y = yCandidate;
 	}
 	
-	public Coordinates(int x, int y) {
+	public Coordinates(int x, int y) throws CoordinateException {
+		checkCoordinatePositivity(x);
+		checkCoordinatePositivity(y);
 		this.x = x;
 		this.y = y;
 	}
@@ -57,7 +63,13 @@ public class Coordinates {
 	public String toString() {
 		return x + " " + y;
 	}
-	
+
+	private void checkCoordinatePositivity(int coordinate) throws CoordinateException {
+		if (coordinate < 0) {
+			throw new CoordinateException("The coordinate : '" + coordinate + "' must be positive.");
+		}
+	}
+
 	private int getCoordinateFromString(String inputNumber) throws CoordinateException {
 		try {
 			return Integer.parseInt(inputNumber);
