@@ -10,6 +10,8 @@
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <dependencies>
@@ -17,6 +19,7 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.8.2</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -27,6 +30,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version>
         <configuration>
           <archive>
             <manifest>
